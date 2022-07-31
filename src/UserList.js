@@ -22,9 +22,10 @@ const UserList = () => {
                 return (
                     <UserContainer
                         key={idx}
-                        userId={item}
-                        mode="postlist"
+                        url={"postlist/" + item}
                         content={item}
+                        prev={null}
+                        next={null}
                     ></UserContainer>
                 );
             })}

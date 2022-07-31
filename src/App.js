@@ -26,14 +26,6 @@ function App() {
         });
     }, []);
 
-    let user = [];
-    const userList = data.map((item) => {
-        if (!user.includes(item.userId)) {
-            user.push(item.userId);
-        }
-        return user;
-    });
-
     return (
         <BrowserRouter>
             <div className="App">
@@ -44,8 +36,8 @@ function App() {
                 </header>
                 <Routes>
                     <Route path="/" exact element={<UserList />} />
-                    <Route path="/postlist/:id" element={<PostList />} />
-                    <Route path="/postdetail/:id" element={<PostDetail />} />
+                    <Route path="/postlist/:userId" element={<PostList />} />
+                    <Route path="/postdetail/:userId/:itemId" element={<PostDetail />} />
                 </Routes>
             </div>
         </BrowserRouter>

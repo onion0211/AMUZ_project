@@ -5,20 +5,21 @@ import { listDetail, origindata } from "./App";
 import UserContainer from "./UserContainer";
 
 const PostList = () => {
-    const { id } = useParams();
+    const { userId } = useParams();
     const data = useRecoilValue(origindata);
     const [settingList, setSettingList] = useRecoilState(listDetail);
 
-    const list = [];
-    const dataList = data.map((item) => {
-        if (item.userId === Number(id)) {
-            list.push(item);
-        }
-        return list;
-    });
-
     const [selectedIdx, setSelectedIdx] = useState(0);
-    const [selectedList, setSelectedList] = useState(list);
+    const [selectedList, setSelectedList] = useState([]);
+
+    const makeList = data.filter((item) => {
+        return item.userId === Number(userId);
+    });
+    useLayoutEffect(() => {
+        if (makeList.length !== 0) {
+            setSelectedList(makeList);
+        }
+    }, []);
 
     const clickButton = (idx) => {
         setSelectedIdx(idx);
@@ -27,22 +28,25 @@ const PostList = () => {
     const changeList = (idx) => {
         switch (idx) {
             case 0:
-                setSelectedList(list);
+                const total = data.filter((item) => {
+                    return item.userId === Number(userId);
+                });
+                setSelectedList(total);
                 break;
             case 1:
-                const completed = list.filter((item) => {
+                const completed = makeList.filter((item) => {
                     return item.completed === true;
                 });
                 setSelectedList(completed);
                 break;
             case 2:
-                const uncompleted = list.filter((item) => {
+                const uncompleted = makeList.filter((item) => {
                     return item.completed === false;
                 });
                 setSelectedList(uncompleted);
                 break;
         }
-        setSettingList(list);
+        setSettingList(makeList);
     };
 
     useLayoutEffect(() => {
@@ -67,13 +71,15 @@ const PostList = () => {
                 </button>
                 <u>post 개수 {selectedList.length}</u>
             </>
-            {selectedList.map((item, idx) => {
+            {settingList.map((item, idx) => {
                 return (
                     <UserContainer
                         key={idx}
                         userId={item.id}
-                        mode="postdetail"
+                        url="postdetail"
                         content={item.title}
+                        prev={null}
+                        next={null}
                     />
                 );
             })}
