@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { origindata } from "./App";
-import UserContainer from "./UserContainer";
+import { origindata } from "../App";
+import UserContainer from "../Component/UserContainer";
 
 const UserList = () => {
     const data = useRecoilValue(origindata);
@@ -22,10 +22,9 @@ const UserList = () => {
                 return (
                     <UserContainer
                         key={idx}
-                        url={"postlist/" + item}
+                        url={"/postlist/" + item}
                         content={item}
-                        prev={null}
-                        next={null}
+                        userId={item}
                     ></UserContainer>
                 );
             })}

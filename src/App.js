@@ -3,9 +3,9 @@ import { atom, useRecoilState } from "recoil";
 import "./App.css";
 import axios from "axios";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import UserList from "./UserList";
-import PostList from "./PostList";
-import PostDetail from "./PostDetail";
+import UserList from "./View/UserList";
+import PostList from "./View/PostList";
+import PostDetail from "./View/PostDetail";
 
 export const origindata = atom({
     key: "origindata",

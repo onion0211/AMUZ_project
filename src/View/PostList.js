@@ -1,25 +1,24 @@
-import React, { useLayoutEffect, useState, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { listDetail, origindata } from "./App";
-import UserContainer from "./UserContainer";
+import { listDetail, origindata } from "../App";
+import UserContainer from "../Component/UserContainer";
 
 const PostList = () => {
     const { userId } = useParams();
     const data = useRecoilValue(origindata);
-    const [settingList, setSettingList] = useRecoilState(listDetail);
+    const [list, setList] = useRecoilState(listDetail);
 
-    const [selectedIdx, setSelectedIdx] = useState(0);
-    const [selectedList, setSelectedList] = useState([]);
-
-    const makeList = data.filter((item) => {
+    const userList = data.filter((item) => {
         return item.userId === Number(userId);
     });
+    const [selectedIdx, setSelectedIdx] = useState(0);
+    const [selectedList, setSelecetedList] = useState([]);
+
     useLayoutEffect(() => {
-        if (makeList.length !== 0) {
-            setSelectedList(makeList);
-        }
-    }, []);
+        setSelecetedList(userList);
+        setList(userList);
+    }, [data]);
 
     const clickButton = (idx) => {
         setSelectedIdx(idx);
@@ -28,30 +27,24 @@ const PostList = () => {
     const changeList = (idx) => {
         switch (idx) {
             case 0:
-                const total = data.filter((item) => {
-                    return item.userId === Number(userId);
-                });
-                setSelectedList(total);
+                setSelecetedList(userList);
                 break;
             case 1:
-                const completed = makeList.filter((item) => {
+                const completed = list.filter((item) => {
                     return item.completed === true;
                 });
-                setSelectedList(completed);
+                setSelecetedList(completed);
                 break;
             case 2:
-                const uncompleted = makeList.filter((item) => {
+                const uncompleted = list.filter((item) => {
                     return item.completed === false;
                 });
-                setSelectedList(uncompleted);
+                setSelecetedList(uncompleted);
                 break;
         }
-        setSettingList(makeList);
+        setList(userList);
     };
 
-    useLayoutEffect(() => {
-        changeList(0);
-    }, []);
     useEffect(() => {
         changeList(selectedIdx);
     }, [selectedIdx]);
@@ -71,15 +64,16 @@ const PostList = () => {
                 </button>
                 <u>post 개수 {selectedList.length}</u>
             </>
-            {settingList.map((item, idx) => {
+            {selectedList.map((item, idx) => {
                 return (
                     <UserContainer
                         key={idx}
-                        userId={item.id}
-                        url="postdetail"
+                        url={"/postdetail/" + userId + "/" + item.id}
                         content={item.title}
-                        prev={null}
-                        next={null}
+                        userID={userId}
+                        itemID={item.id}
+                        userId={userId}
+                        itemId={item.id}
                     />
                 );
             })}
