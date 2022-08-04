@@ -4,6 +4,7 @@ import { useRecoilValue } from "recoil";
 import { listDetail, origindata } from "../App";
 import UserContainer from "../Component/UserContainer";
 
+//git push test
 const PostDetail = () => {
     const { userId, itemId } = useParams();
     const data = useRecoilValue(origindata);
