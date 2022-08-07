@@ -1,10 +1,12 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { origindata } from "../App";
+import { origindata, userData } from "../App";
 import UserContainer from "../Component/UserContainer";
+import JnE from "../Image/JnE.jpeg";
 
 const UserList = () => {
     const data = useRecoilValue(origindata);
+    const userdata = useRecoilValue(userData);
 
     let user = [];
     const userList = data.map((item) => {
@@ -17,17 +19,8 @@ const UserList = () => {
     return (
         <>
             <h3 className="title">User List</h3>
-            <div>user 총 개수 : {user.length}</div>
-            {user.map((item, idx) => {
-                return (
-                    <UserContainer
-                        key={idx}
-                        url={"/postlist/" + item}
-                        content={item}
-                        userId={item}
-                    ></UserContainer>
-                );
-            })}
+            <div style={{ marginBottom: "15px" }}>user 총 개수 : {user.length}</div>
+            <UserContainer type="userList" list={JSON.stringify(userdata)} />
         </>
     );
 };

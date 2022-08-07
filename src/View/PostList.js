@@ -1,8 +1,15 @@
+import axios from "axios";
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { atom, useRecoilState, useRecoilValue } from "recoil";
 import { listDetail, origindata } from "../App";
 import UserContainer from "../Component/UserContainer";
+import Loading from "../Component/Loading";
+
+export const commentList = atom({
+    key: "commentList",
+    default: [],
+});
 
 const PostList = () => {
     const { userId } = useParams();
@@ -49,6 +56,29 @@ const PostList = () => {
         changeList(selectedIdx);
     }, [selectedIdx]);
 
+    const [comment, setComment] = useRecoilState(commentList);
+    const [loading, setLoading] = useState(null);
+    const commentApi = async () => {
+        try {
+            setLoading(true);
+            await axios
+                .get("https://jsonplaceholder.typicode.com/comments?postId=1")
+                .then((res) => {
+                    setComment(res.data);
+                });
+        } catch (e) {
+            console.debug("error");
+        }
+        setLoading(false);
+    };
+    console.log("postList comment", comment);
+
+    useLayoutEffect(() => {
+        commentApi();
+    }, []);
+
+    if (loading) return <Loading />;
+
     return (
         <>
             <h3 className="title">Post List</h3>
@@ -64,19 +94,7 @@ const PostList = () => {
                 </button>
                 <u>post 개수 {selectedList.length}</u>
             </>
-            {selectedList.map((item, idx) => {
-                return (
-                    <UserContainer
-                        key={idx}
-                        url={"/postdetail/" + userId + "/" + item.id}
-                        content={item.title}
-                        userID={userId}
-                        itemID={item.id}
-                        userId={userId}
-                        itemId={item.id}
-                    />
-                );
-            })}
+            <UserContainer type="postList" list={JSON.stringify(selectedList)} userId={userId} />
         </>
     );
 };
