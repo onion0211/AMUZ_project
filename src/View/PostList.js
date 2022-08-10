@@ -1,26 +1,39 @@
 import axios from "axios";
 import React, { useState, useLayoutEffect, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { atom, useRecoilState, useRecoilValue } from "recoil";
-import { listDetail, origindata } from "../App";
+import { useRecoilState } from "recoil";
+import { listDetail, origindata } from "../Component/Atom";
 import UserContainer from "../Component/UserContainer";
 import Loading from "../Component/Loading";
 
-export const commentList = atom({
-    key: "commentList",
-    default: [],
-});
-
 const PostList = () => {
     const { userId } = useParams();
-    const data = useRecoilValue(origindata);
+    const [data, setData] = useRecoilState(origindata);
     const [list, setList] = useRecoilState(listDetail);
+
+    const [loading, setLoading] = useState(null);
+    const postApi = async () => {
+        try {
+            setLoading(true);
+            await axios.get("https://jsonplaceholder.typicode.com/todos").then((res) => {
+                setData(res.data);
+            });
+        } catch (e) {
+            console.debug("error");
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        postApi();
+    }, []);
+
+    const [selectedIdx, setSelectedIdx] = useState(0);
+    const [selectedList, setSelecetedList] = useState([]);
 
     const userList = data.filter((item) => {
         return item.userId === Number(userId);
     });
-    const [selectedIdx, setSelectedIdx] = useState(0);
-    const [selectedList, setSelecetedList] = useState([]);
 
     useLayoutEffect(() => {
         setSelecetedList(userList);
@@ -56,31 +69,9 @@ const PostList = () => {
         changeList(selectedIdx);
     }, [selectedIdx]);
 
-    const [comment, setComment] = useRecoilState(commentList);
-    const [loading, setLoading] = useState(null);
-    const commentApi = async () => {
-        try {
-            setLoading(true);
-            await axios
-                .get("https://jsonplaceholder.typicode.com/comments?postId=1")
-                .then((res) => {
-                    setComment(res.data);
-                });
-        } catch (e) {
-            console.debug("error");
-        }
-        setLoading(false);
-    };
-    console.log("postList comment", comment);
-
-    useLayoutEffect(() => {
-        commentApi();
-    }, []);
-
-    if (loading) return <Loading />;
-
     return (
         <>
+            {loading ? <Loading /> : <></>}
             <h3 className="title">Post List</h3>
             <>
                 <button className="buttonS" onClick={() => clickButton(0)}>

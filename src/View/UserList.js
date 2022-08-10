@@ -1,25 +1,35 @@
-import React from "react";
-import { useRecoilValue } from "recoil";
-import { origindata, userData } from "../App";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { origindata, userData } from "../Component/Atom";
 import UserContainer from "../Component/UserContainer";
-import JnE from "../Image/JnE.jpeg";
+import Loading from "../Component/Loading";
 
 const UserList = () => {
-    const data = useRecoilValue(origindata);
-    const userdata = useRecoilValue(userData);
+    const [userdata, setUserdata] = useRecoilState(userData);
+    const [loading, setLoading] = useState(null);
 
-    let user = [];
-    const userList = data.map((item) => {
-        if (!user.includes(item.userId)) {
-            user.push(item.userId);
+    const mainApi = async () => {
+        try {
+            setLoading(true);
+            await axios.get("https://jsonplaceholder.typicode.com/users").then((res) => {
+                setUserdata(res.data);
+            });
+        } catch (e) {
+            console.debug("error");
         }
-        return user;
-    });
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        mainApi();
+    }, []);
 
     return (
         <>
+            {loading ? <Loading /> : <></>}
             <h3 className="title">User List</h3>
-            <div style={{ marginBottom: "15px" }}>user 총 개수 : {user.length}</div>
+            <div style={{ marginBottom: "15px" }}>user 총 개수 : {userdata.length}</div>
             <UserContainer type="userList" list={JSON.stringify(userdata)} />
         </>
     );

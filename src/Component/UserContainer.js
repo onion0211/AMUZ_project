@@ -3,15 +3,15 @@ import JnE from "../Image/JnE.jpeg";
 import { UserIcon } from "@heroicons/react/solid";
 
 const UserContainer = (props) => {
-    const history = useNavigate();
-    const goTo = () => {
-        history(props.url, {
-            state: {
-                userID: props.userID,
-                itemID: props.itemID,
-            },
-        });
-    };
+    // const history = useNavigate();
+    // const goTo = () => {
+    //     history(props.url, {
+    //         state: {
+    //             userID: props.userID,
+    //             itemID: props.itemID,
+    //         },
+    //     });
+    // };
 
     const userListComponent = (list) => {
         const userList = JSON.parse(list);
@@ -27,13 +27,16 @@ const UserContainer = (props) => {
                                 <img className="h-10 w-10 rounded-full" src={JnE} alt="" />
                             </div>
                             <div className="flex-1 min-w-0">
-                                <a href={"/postlist/" + item.id} className="focus:outline-none">
+                                <Link
+                                    to={{ pathname: "/postlist/" + item.id }}
+                                    className="focus:outline-none"
+                                >
                                     <span className="absolute inset-0" aria-hidden="true" />
                                     <p className="text-sm font-medium text-gray-900">{item.name}</p>
                                     <p className="text-sm text-gray-500 truncate">
                                         {item.company.name + " / " + item.company.catchPhrase}
                                     </p>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     );
@@ -77,12 +80,18 @@ const UserContainer = (props) => {
                                     </div>
                                     <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                         <div>
-                                            <a
-                                                href={"/postdetail/" + props.userId + "/" + item.id}
+                                            <Link
+                                                to={{
+                                                    pathname:
+                                                        "/postdetail/" +
+                                                        props.userId +
+                                                        "/" +
+                                                        item.id,
+                                                }}
                                                 className="font-medium text-gray-900"
                                             >
                                                 {item.title}
-                                            </a>
+                                            </Link>
                                         </div>
                                         <div className="text-right text-sm whitespace-nowrap text-gray-500">
                                             <div>{item.completed ? "완성" : "미완성"}</div>
