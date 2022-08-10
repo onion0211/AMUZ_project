@@ -330,33 +330,37 @@ const PostDetail = () => {
                         </div>
                     </div>
 
-                    <div style={{ margin: "0px 10px" }}>
-                        <div className="flow-root mt-6">
-                            <ul role="list" className="-my-5 divide-y divide-gray-200">
-                                {postCommentList.map((person) => (
-                                    <li key={person.id} className="py-4">
-                                        <div className="flex items-start space-x-4">
-                                            <div className="flex-shrink-0">
-                                                <img
-                                                    className="h-8 w-8 rounded-full"
-                                                    src={JHM}
-                                                    alt=""
-                                                />
+                    {postCommentList.length !== 0 ? (
+                        <div style={{ margin: "0px 10px" }}>
+                            <div className="flow-root mt-6">
+                                <ul role="list" className="-my-5 divide-y divide-gray-200">
+                                    {postCommentList.map((person) => (
+                                        <li key={person.id} className="py-4">
+                                            <div className="flex items-start space-x-4">
+                                                <div className="flex-shrink-0">
+                                                    <img
+                                                        className="h-8 w-8 rounded-full"
+                                                        src={JHM}
+                                                        alt=""
+                                                    />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-sm font-medium text-gray-900 truncate">
+                                                        {person.name + " / " + person.email}
+                                                    </p>
+                                                    <p className="text-sm text-gray-500 truncate">
+                                                        {person.body}
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="flex-1 min-w-0">
-                                                <p className="text-sm font-medium text-gray-900 truncate">
-                                                    {person.name + " / " + person.email}
-                                                </p>
-                                                <p className="text-sm text-gray-500 truncate">
-                                                    {person.body}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    ) : (
+                        <div>댓글 없지롱~~~!!!!!</div>
+                    )}
                 </>
             )}
         </>
