@@ -336,7 +336,7 @@ const PostDetail = () => {
                                 <ul role="list" className="-my-5 divide-y divide-gray-200">
                                     {postCommentList.map((person) => (
                                         <li key={person.id} className="py-4">
-                                            <div className="flex items-start space-x-4">
+                                            <div className="flex justify-start space-x-4">
                                                 <div className="flex-shrink-0">
                                                     <img
                                                         className="h-8 w-8 rounded-full"
@@ -345,10 +345,10 @@ const PostDetail = () => {
                                                     />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-sm font-medium text-gray-900 truncate">
+                                                    <p className="text-sm font-medium text-gray-900 truncate text-left">
                                                         {person.name + " / " + person.email}
                                                     </p>
-                                                    <p className="text-sm text-gray-500 truncate">
+                                                    <p className="text-sm text-gray-500 truncate text-left">
                                                         {person.body}
                                                     </p>
                                                 </div>
